@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
 	<title></title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
 		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!--Toast-->
+	<link rel="stylesheet" th:href="@{/css/toast.min.css}" />
 </head>
 
 <body>
@@ -23,36 +25,52 @@
 									class="img-fluid rounded float-left" alt="...">
 							</div>
 							<div class="col-8">
-								<h2 class="mb-3">Manchas</h2>
+								<h2 class="mb-3">[[${mascota.nombre}]]</h2>
 								<h4>
 									Sexo
-									<small class="text-muted">Macho</small>
+									<small class="text-muted" th:text="${mascota.sexo == 'M'} ? 'Macho' : 'Hembra'"></small>
 								</h4>
 								<h4>
 									Edad
-									<small class="text-muted">6 meses</small>
+									<small class="text-muted">[[${mascota.edad}]] meses</small>
 								</h4>
 								<h4>
 									Color
-									<small class="text-muted">Varios colores</small>
+									<small class="text-muted">[[${mascota.color.nombre}]]</small>
 								</h4>
 								<h4>
 									Carácter
-									<small class="text-muted">Juguetón</small>
+									<small class="text-muted">[[${mascota.caracter.nombre}]]</small>
 								</h4>
 								<h4>
 									Tipo
-									<small class="text-muted">Perro</small>
+									<small class="text-muted">[[${mascota.tipo}]]</small>
 								</h4>
 								<h4>
 									Fecha de registro
-									<small class="text-muted">14 marzo 2022</small>
+									<small class="text-muted" th:text="${#dates.format(mascota.fechaRegistro, 'dd-MMM-yyyy')}"></small>
 								</h4>
 								<h4>
 									Verificación
-									<small class="text-muted"><span class="badge badge-pill badge-success">Exitosa</span></small>
+									<div th:switch="${mascota.validacion}">
+										<div th:case="'validado'">
+											<small class="text-muted">
+												<span class="badge badge-pill badge-success">Exitosa</span>
+											</small>
+										</div>
+										<div th:case="'pendiente'">
+											<small lass="text-muted">
+												<span class="badge badge-pill badge-warning">Pendiente</span>
+											</small>
+										</div>
+										<div th:case="'rechazado'">
+											<small lass="text-muted">
+												<span class="badge badge-pill badge-danger">Rechazado</span>
+											</small>
+										</div>
+									</div>
 								</h4>
-								<a href="#" class="btn btn-primary btn-lg btn-block mt-3">
+								<a th:href="@{/mascotas/editar/{id} (id=${mascota.id})}" class="btn btn-primary btn-lg btn-block mt-3">
 									<ion-icon name="create"></ion-icon>&nbsp;Editar
 								</a>
 							</div>
@@ -67,18 +85,8 @@
 	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-	<script th:if="${msg_success != null}">
-		Toastify({
-			text: "[[${msg_success}]]",
-			duration: 5000,
-			gravity: "bottom", // `top` or `bottom`
-			position: "left", // `left`, `center` or `right`
-			style: {
-				background: "linear-gradient(to right, #00b09b, #96c93d)",
-			}
-		}).showToast();
-	</script>
+	<!--Toast-->
+	<script th:src="@{/js/toast.min.js}"></script>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

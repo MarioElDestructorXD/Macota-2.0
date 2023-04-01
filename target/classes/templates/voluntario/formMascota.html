@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
 	<title></title>
@@ -20,70 +20,70 @@
 				<div class="card mt-3">
 					<div class="card-body">
 						<h2 class="mb-3">Nueva Mascota</h2>
-						<form th:action="@{/mascotas/crear}" method="POST" th:object="${mascota}">
+						<form th:action="@{/mascotas/guardar}" method="POST" th:object="${mascota}">
 							<div class="form-row">
 								<div class="form-group col">
 									<label>Nombre</label>
-									<input class="form-control form-control-lg" th:field="*{nombre}" type="text" placeholder="">
+									<input class="form-control form-control-lg" type="text" placeholder="" name="nombre" th:value="${mascota.nombre}"/>
 								</div>
 								<div class="form-group col">
 									<label>Sexo</label>
-									<input class="form-control form-control-lg" th:field="*{sexo}" type="text" placeholder="">
+									<br>
+									<div class="form-control-lg form-check form-check-inline">
+										<input class="form-check-input" type="radio" th:value="M" name="sexo" id="sexo1" th:field="*{sexo}">
+										<label class="form-check-label" for="sexo1">Macho</label>
+									</div>
+									<div class="form-control-lg form-check form-check-inline">
+										<input class="form-check-input" type="radio" th:value="H" name="sexo" id="sexo2" th:field="*{sexo}">
+										<label class="form-check-label" for="sexo2">Hembra</label>
+									</div>
 								</div>
 								<div class="form-group col">
 									<label>Edad</label>
-									<input class="form-control form-control-lg" th:field="*{edad}" type="text" placeholder="">
+									<input class="form-control form-control-lg" type="text" placeholder="" name="edad" th:value="${mascota.edad}">
 								</div>
 							</div>
 
 							<div class="form-row">
 								<div class="form-group col">
 									<label>Tamaño</label>
-									<select class="form-control form-control-lg" th:field="*{tamano.id}">
-										<option
-												th:each="tmpTamano: ${listaTamano}"
-												th:value="${tmpTamano.id}"
-												th:text="${tmpTamano.nombre}"></option>
+									<select class="form-control" th:field="*{tamano.id}">
+										<option th:each="tmpTamano : ${listaTamanos}" th:value="${tmpTamano.id}" th:text="${tmpTamano.nombre}" />
 									</select>
 								</div>
 								<div class="form-group col">
 									<label>Color</label>
-									<select class="form-control form-control-lg" th:field="*{color.id}">
-										<option
-												th:each="tmpColor: ${listaColor}"
-												th:value="${tmpColor.id}"
-												th:text="${tmpColor.nombre}"></option>
+									<select class="form-control" th:field="*{color.id}">
+										<option th:each="tmpColor : ${listaColores}" th:value="${tmpColor.id}" th:text="${tmpColor.nombre}"/>
 									</select>
 								</div>
 								<div class="form-group col">
-									<label>Caracter</label>
-									<select class="form-control form-control-lg" th:field="*{caracter.id}">
-										<option
-												th:each="tmpCaracter: ${listaCaracter}"
-												th:value="${tmpCaracter.id}"
-												th:text="${tmpCaracter.nombre}"></option>
+									<label>Carácter</label>
+									<select class="form-control" th:field="*{caracter.id}">
+										<option th:each="tmpCaracter : ${listaCaracteres}" th:value="${tmpCaracter.id}" th:text="${tmpCaracter.nombre}"/>
 									</select>
 								</div>
 							</div>
 
 							<div class="form-row">
-								<div class="form-group">
+								<div class="col">
 									<label>Tipo</label>
 									<br>
-									<label>
-										<input type="radio" th:field="*{tipo}" value="perro"> Perro
-									</label>
-									<label>
-										<input type="radio" th:field="*{tipo}" value="gato"> Gato
-									</label>
-
+									<div class="form-control-lg form-check form-check-inline">
+										<input class="form-check-input" type="radio" th:value="perro" name="tipo" id="tipo1" th:field="*{tipo}">
+										<label class="form-check-label" for="tipo1">Perro</label>
+									</div>
+									<div class="form-control-lg form-check form-check-inline">
+										<input class="form-check-input" type="radio" th:value="gato" name="tipo" id="tipo2" th:field="*{tipo}">
+										<label class="form-check-label" for="tipo2">Gato</label>
+									</div>
 								</div>
 								<div class="col">
 									<label>Imagen</label>
-									<input class="form-control form-control-lg" th:field="*{imagen}" type="file" placeholder="">
+									<input class="form-control form-control-lg" type="file" placeholder="" name="imagen">
 								</div>
 							</div>
-
+							<input type="hidden" th:field="*{id}" th:value="*{id}" />
 							<button type="submit" class="btn btn-primary btn-lg btn-block mt-3">
 								<ion-icon name="checkmark"></ion-icon>&nbsp;Guardar
 							</button>
@@ -94,19 +94,6 @@
 
 		</div>
 	</div>
-
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-	<script th:if="${msg_error != null}">
-		Toastify({
-			text: "[[${msg_error}]]",
-			duration: 5000,
-			gravity: "bottom", // `top` or `bottom`
-			position: "left", // `left`, `center` or `right`
-			style: {
-				background: "linear-gradient(to right, #00b09b, #96c93d)",
-			}
-		}).showToast();
-	</script>
 
 	<!--Ionicons-->
 	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
