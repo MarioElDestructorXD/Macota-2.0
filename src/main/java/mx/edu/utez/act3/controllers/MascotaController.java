@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Controller
 @RequestMapping("/mascotas")
@@ -30,8 +34,9 @@ public class MascotaController {
      * Display a listing of the resource
      */
     @GetMapping(value = { "/listar", "/listar/{tipoMascota}" })
-    public String listarMascotas(@PathVariable(required = false) String tipoMascota, Model modelo) {
-        modelo.addAttribute("listaMascotas", mascotaServiceImpl.listar());
+    public String listarMascotas(@PathVariable(required = false) String tipoMascota, Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
+        Page<Mascota> listaMascotas = mascotaServiceImpl.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 3, Sort.by("fechaRegistro").descending()));
+        model.addAttribute("listaMascotas", listaMascotas);
         return "voluntario/listarMascotas";
     }
 
@@ -62,17 +67,17 @@ public class MascotaController {
         }
         boolean respuesta = mascotaServiceImpl.guardar(mascota);
         if (respuesta) {
-            if (mascota.getId() != null) {
-                redirectAttributes.addFlashAttribute("msg_success", "¡Modificación exitosa!");
-            }else{
+            if (mascota.getId() == null) {
                 redirectAttributes.addFlashAttribute("msg_success", "¡Registro exitoso!");
+            }else{
+                redirectAttributes.addFlashAttribute("msg_success", "¡Modificación exitosa!");
             }
             return "redirect:/mascotas/listar";
         } else {
-            if (mascota.getId() != null) {
-                redirectAttributes.addFlashAttribute("msg_error", "¡Modificación fallida! Por favor intenta de nuevo.");
-            }else{
+            if (mascota.getId() == null) {
                 redirectAttributes.addFlashAttribute("msg_error", "¡Registro fallido! Por favor intenta de nuevo.");
+            }else{
+                redirectAttributes.addFlashAttribute("msg_error", "¡Modificación fallida! Por favor intenta de nuevo.");
             }
             return "redirect:/mascotas/crear";
         }
@@ -122,4 +127,6 @@ public class MascotaController {
         redirectAttributes.addFlashAttribute("msg_error", "Registro no encontrado.");
         return "redirect:/mascotas/listar";
     }
+
+
 }

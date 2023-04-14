@@ -3,6 +3,8 @@ package mx.edu.utez.act3.services;
 import mx.edu.utez.act3.model.Mascota;
 import mx.edu.utez.act3.repositories.MascotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +48,11 @@ public class MascotaServiceImpl implements IMascotaService{
             return !mascotaRepository.existsById(id);
         }
         return false;
+    }
+
+    @Override
+    public Page<Mascota> listarPaginacion(Pageable page) {
+        return mascotaRepository.findAll(page);
     }
 
 }

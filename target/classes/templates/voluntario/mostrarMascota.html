@@ -50,6 +50,7 @@
 									Fecha de registro
 									<small class="text-muted" th:text="${#dates.format(mascota.fechaRegistro, 'dd-MMM-yyyy')}"></small>
 								</h4>
+								<p th:utext="${mascota.detalles}"></p>
 								<h4>
 									Verificación
 									<div th:switch="${mascota.validacion}">
